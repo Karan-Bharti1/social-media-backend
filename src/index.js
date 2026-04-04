@@ -31,7 +31,7 @@ app.post("/login",async function(req,res){
 try{
 const {email,password}=req.body
 const user=await User.findOne({email:email.toLowerCase()})
-console.log(user)
+
 if(!user){
     throw new Error("Invalid User")
 }
@@ -41,9 +41,9 @@ const isPassword=await bcrypt.compare(password,user.password)
 if(isPassword){
     // Create JWT token
 const token=await jwt.sign(
-    {_id:user._id},"KaranSocialMedia@123"
+    {_id:user._id},process.env.JWT_SECRET,{expiresIn:"7d"}
 )
-    // Add the token to the cokkie and send it as a response
+    // Add the token to the cookie and send it as a response
     res.cookie("token",token)
     res.send("Login Succesfull")
 
@@ -55,10 +55,10 @@ const token=await jwt.sign(
 }
 })
 
-app.get("/profile",async(req,res)=>{
+app.get("/profile",userAuth,async(req,res)=>{
     try{
-console.log(req.cookies)
-res.send(req.cookies)
+const user=req.user
+res.send({message:"User Logged",user})
     }catch(err){
          res.status(400).send({errorMessage:"Something went wrong!",err})
     }
