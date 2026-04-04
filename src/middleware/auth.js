@@ -11,7 +11,7 @@ try { // Get token
  
  // Find the User
  const user=await User.findOne({_id})
- console.log(user)
+
  if(!user){
     throw new Error("User Not Found")
  }
