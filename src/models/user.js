@@ -3,16 +3,20 @@ const validator = require('validator');
 const userSchema=new mongoose.Schema({
     firstName:{
         type:String,
-        required:true
+        required:true,
+        index:true
     },
     lastName:{
         type:String
     },
+
+
     email:{
         type:String,
         required:true,
         unique:true,
         lowercase:true,
+        
         validate(value){
             if(!validator.isEmail(value)){
                 throw new Error("Please write a valid email")

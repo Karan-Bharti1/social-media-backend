@@ -15,7 +15,7 @@ const passwordHash= await bcrypt.hash(password, 10)
     const user=new User({firstName,lastName,email,password:passwordHash})// Intance of the model
     try{
 await user.save()
-res.send({message:"User Sent successfully"})   
+res.json({message:"User Sent successfully"})   
     }catch(err){
 res.status(400).send({errorMessage:"Something went wrong!",err})
 
@@ -39,10 +39,10 @@ if(isPassword){
 const token=await jwt.sign(
     {_id:user._id},process.env.JWT_SECRET,{expiresIn:"7d"}
 )
-console.log(token)
+
     // Add the token to the cookie and send it as a response
     res.cookie("token",token)
-    res.send("Login Succesfull")
+    res.json({message:"Login Succesfull"})
 
 }else {
     throw new Error("Invalid User!!")
@@ -53,6 +53,6 @@ console.log(token)
 })
 authRouter.post("/logout",async(req,res)=>{
     res.cookie("token",null,{expires:new Date(Date.now())})
-    res.send("User Succesfully logged out")
+    res.send({message:"User Succesfully logged out"})
 })
 module.exports=authRouter

@@ -21,7 +21,7 @@ const loggedUser=req.user
 Object.keys(req.body).forEach(key=>loggedUser[key] = req.body[key])
 
 await loggedUser.save()
-res.send({message:`${loggedUser.firstName}, your data has been updated successfully`,updatedData:{loggedUser}})
+res.json({message:`${loggedUser.firstName}, your data has been updated successfully`,data:{loggedUser}})
     }
     catch(err){
      res.status(400).send({errorMessage:"Something went wrong!",err})
